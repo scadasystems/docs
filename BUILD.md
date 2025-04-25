@@ -54,5 +54,5 @@ $ pnpm build
 # 빌드 플랫폼 생성이 되어 있는 경우 무시함
 $ docker buildx create --name flintapp
 $ docker buildx use flintapp
-$ docker buildx build --platform linux/amd64,linux/arm64 -t flintapp/docs:0.20.1 --push .
+$ docker buildx build --platform linux/amd64,linux/arm64 -t flintapp/docs:0.20.3 --push .
 ```
