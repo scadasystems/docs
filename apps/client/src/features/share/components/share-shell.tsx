@@ -1,4 +1,25 @@
-import React from "react";
+import {
+  desktopSidebarAtom,
+  mobileSidebarAtom,
+} from "@/components/layouts/global/hooks/atoms/sidebar-atom.ts";
+import { useToggleSidebar } from "@/components/layouts/global/hooks/hooks/use-toggle-sidebar.ts";
+import { ThemeToggle } from "@/components/theme-toggle.tsx";
+import SidebarToggle from "@/components/ui/sidebar-toggle-button.tsx";
+import { readOnlyEditorAtom } from "@/features/editor/atoms/editor-atoms.ts";
+import { TableOfContents } from "@/features/editor/components/table-of-contents/table-of-contents.tsx";
+import {
+  SearchControl,
+  SearchMobileControl,
+} from "@/features/search/components/search-control.tsx";
+import { shareSearchSpotlight } from "@/features/search/constants";
+import { ShareSearchSpotlight } from "@/features/search/share-search-spotlight";
+import {
+  mobileTableOfContentAsideAtom,
+  tableOfContentAsideAtom,
+} from "@/features/share/atoms/sidebar-atom.ts";
+import SharedTree from "@/features/share/components/shared-tree.tsx";
+import { useToggleToc } from "@/features/share/hooks/use-toggle-toc.ts";
+import { useGetSharedPageTreeQuery } from "@/features/share/queries/share-query.ts";
 import {
   ActionIcon,
   Affix,
@@ -8,34 +29,12 @@ import {
   ScrollArea,
   Tooltip,
 } from "@mantine/core";
-import { useGetSharedPageTreeQuery } from "@/features/share/queries/share-query.ts";
-import { useParams } from "react-router-dom";
-import SharedTree from "@/features/share/components/shared-tree.tsx";
-import { TableOfContents } from "@/features/editor/components/table-of-contents/table-of-contents.tsx";
-import { readOnlyEditorAtom } from "@/features/editor/atoms/editor-atoms.ts";
-import { ThemeToggle } from "@/components/theme-toggle.tsx";
-import { useAtomValue } from "jotai";
-import { useAtom } from "jotai";
-import {
-  desktopSidebarAtom,
-  mobileSidebarAtom,
-} from "@/components/layouts/global/hooks/atoms/sidebar-atom.ts";
-import SidebarToggle from "@/components/ui/sidebar-toggle-button.tsx";
-import { useTranslation } from "react-i18next";
-import { useToggleSidebar } from "@/components/layouts/global/hooks/hooks/use-toggle-sidebar.ts";
-import {
-  mobileTableOfContentAsideAtom,
-  tableOfContentAsideAtom,
-} from "@/features/share/atoms/sidebar-atom.ts";
 import { IconList } from "@tabler/icons-react";
-import { useToggleToc } from "@/features/share/hooks/use-toggle-toc.ts";
+import { useAtom, useAtomValue } from "jotai";
+import React from "react";
+import { useTranslation } from "react-i18next";
+import { useParams } from "react-router-dom";
 import classes from "./share.module.css";
-import {
-  SearchControl,
-  SearchMobileControl,
-} from "@/features/search/components/search-control.tsx";
-import { ShareSearchSpotlight } from "@/features/search/share-search-spotlight";
-import { shareSearchSpotlight } from "@/features/search/constants";
 
 const MemoizedSharedTree = React.memo(SharedTree);
 
@@ -164,14 +163,16 @@ export default function ShareShell({
         {children}
 
         <Affix position={{ bottom: 20, right: 20 }}>
-          <Button
-            variant="default"
-            component="a"
-            target="_blank"
-            href="https://docmost.com?ref=public-share"
-          >
-            Powered by Docmost
-          </Button>
+          <Tooltip label="Developed by LulzM" withArrow>
+            <Button
+              variant="default"
+              component="a"
+              target="_blank"
+              href="https://dusta.dev"
+            >
+              Powered by DICAMO
+            </Button>
+          </Tooltip>
         </Affix>
       </AppShell.Main>
 

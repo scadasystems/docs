@@ -1,13 +1,12 @@
-import * as z from "zod";
-import React from "react";
+import RemoveLicense from "@/ee/licence/components/remove-license.tsx";
+import { useActivateMutation } from "@/ee/licence/queries/license-query.ts";
+import { workspaceAtom } from "@/features/user/atoms/current-user-atom.ts";
 import { Button, Group, Modal, Textarea } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
-import { useTranslation } from "react-i18next";
-import { useActivateMutation } from "@/ee/licence/queries/license-query.ts";
 import { useDisclosure } from "@mantine/hooks";
 import { useAtom } from "jotai";
-import { workspaceAtom } from "@/features/user/atoms/current-user-atom.ts";
-import RemoveLicense from "@/ee/licence/components/remove-license.tsx";
+import { useTranslation } from "react-i18next";
+import * as z from "zod";
 
 export default function ActivateLicense() {
   const { t } = useTranslation();
@@ -16,10 +15,6 @@ export default function ActivateLicense() {
 
   return (
     <Group justify="flex-end" wrap="nowrap" mb="sm">
-      <Button onClick={open}>
-        {workspace?.hasLicenseKey ? t("Update license") : t("Add license")}
-      </Button>
-
       {workspace?.hasLicenseKey && <RemoveLicense />}
 
       <Modal

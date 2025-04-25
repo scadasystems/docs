@@ -1,5 +1,5 @@
-import bytes from "bytes";
 import { castToBoolean } from "@/lib/utils.tsx";
+import bytes from "bytes";
 
 declare global {
   interface Window {
@@ -8,7 +8,7 @@ declare global {
 }
 
 export function getAppName(): string {
-  return "Docmost";
+  return "DUSTA Docs";
 }
 
 export function getAppUrl(): string {

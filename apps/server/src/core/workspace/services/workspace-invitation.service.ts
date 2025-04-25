@@ -1,33 +1,33 @@
-import {
-  BadRequestException,
-  Injectable,
-  Logger,
-  NotFoundException,
-} from '@nestjs/common';
-import { AcceptInviteDto, InviteUserDto } from '../dto/invitation.dto';
+import { executeWithPagination } from '@docmost/db/pagination/pagination';
+import { PaginationOptions } from '@docmost/db/pagination/pagination-options';
+import { GroupUserRepo } from '@docmost/db/repos/group/group-user.repo';
 import { UserRepo } from '@docmost/db/repos/user/user.repo';
-import { InjectKysely } from 'nestjs-kysely';
-import { KyselyDB } from '@docmost/db/types/kysely.types';
-import { executeTx } from '@docmost/db/utils';
 import {
   Group,
   User,
   Workspace,
   WorkspaceInvitation,
 } from '@docmost/db/types/entity.types';
-import { MailService } from '../../../integrations/mail/mail.service';
-import InvitationEmail from '@docmost/transactional/emails/invitation-email';
-import { GroupUserRepo } from '@docmost/db/repos/group/group-user.repo';
+import { KyselyDB } from '@docmost/db/types/kysely.types';
+import { executeTx } from '@docmost/db/utils';
 import InvitationAcceptedEmail from '@docmost/transactional/emails/invitation-accepted-email';
-import { TokenService } from '../../auth/services/token.service';
-import { nanoIdGen } from '../../../common/helpers';
-import { PaginationOptions } from '@docmost/db/pagination/pagination-options';
-import { executeWithPagination } from '@docmost/db/pagination/pagination';
-import { DomainService } from 'src/integrations/environment/domain.service';
+import InvitationEmail from '@docmost/transactional/emails/invitation-email';
 import { InjectQueue } from '@nestjs/bullmq';
-import { QueueJob, QueueName } from '../../../integrations/queue/constants';
+import {
+  BadRequestException,
+  Injectable,
+  Logger,
+  NotFoundException,
+} from '@nestjs/common';
 import { Queue } from 'bullmq';
+import { InjectKysely } from 'nestjs-kysely';
+import { DomainService } from 'src/integrations/environment/domain.service';
+import { nanoIdGen } from '../../../common/helpers';
 import { EnvironmentService } from '../../../integrations/environment/environment.service';
+import { MailService } from '../../../integrations/mail/mail.service';
+import { QueueJob, QueueName } from '../../../integrations/queue/constants';
+import { TokenService } from '../../auth/services/token.service';
+import { AcceptInviteDto, InviteUserDto } from '../dto/invitation.dto';
 
 @Injectable()
 export class WorkspaceInvitationService {
@@ -41,7 +41,7 @@ export class WorkspaceInvitationService {
     @InjectKysely() private readonly db: KyselyDB,
     @InjectQueue(QueueName.BILLING_QUEUE) private billingQueue: Queue,
     private readonly environmentService: EnvironmentService,
-  ) {}
+  ) { }
 
   async getInvitations(workspaceId: string, pagination: PaginationOptions) {
     let query = this.db
@@ -359,7 +359,7 @@ export class WorkspaceInvitationService {
 
     await this.mailService.sendToQueue({
       to: inviteeEmail,
-      subject: `${invitedByName} invited you to Docmost`,
+      subject: `${invitedByName} invited you to DUSTA Docs`,
       template: emailTemplate,
     });
   }

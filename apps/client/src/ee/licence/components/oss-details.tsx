@@ -11,14 +11,14 @@ export default function OssDetails() {
         withTableBorder
       >
         <Table.Caption>
-          To unlock enterprise features like SSO, contact sales@docmost.com.
+          Developed by <a href="https://github.com/scadasystems">LulzM</a> at DICAMO.
         </Table.Caption>
         <Table.Tbody>
           <Table.Tr>
             <Table.Th w={160}>Edition</Table.Th>
             <Table.Td>
               <Group wrap="nowrap">
-                Open Source
+                Self Hosted
                 <div>
                   <ThemeIcon
                     color="green"

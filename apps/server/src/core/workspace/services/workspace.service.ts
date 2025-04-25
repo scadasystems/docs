@@ -1,3 +1,13 @@
+import { PaginationResult } from '@docmost/db/pagination/pagination';
+import { PaginationOptions } from '@docmost/db/pagination/pagination-options';
+import { GroupUserRepo } from '@docmost/db/repos/group/group-user.repo';
+import { GroupRepo } from '@docmost/db/repos/group/group.repo';
+import { UserRepo } from '@docmost/db/repos/user/user.repo';
+import { WorkspaceRepo } from '@docmost/db/repos/workspace/workspace.repo';
+import { User } from '@docmost/db/types/entity.types';
+import { KyselyDB, KyselyTransaction } from '@docmost/db/types/kysely.types';
+import { executeTx } from '@docmost/db/utils';
+import { InjectQueue } from '@nestjs/bullmq';
 import {
   BadRequestException,
   ForbiddenException,
@@ -5,33 +15,22 @@ import {
   Logger,
   NotFoundException,
 } from '@nestjs/common';
-import { CreateWorkspaceDto } from '../dto/create-workspace.dto';
-import { UpdateWorkspaceDto } from '../dto/update-workspace.dto';
-import { SpaceService } from '../../space/services/space.service';
-import { CreateSpaceDto } from '../../space/dto/create-space.dto';
-import { SpaceRole, UserRole } from '../../../common/helpers/types/permission';
-import { SpaceMemberService } from '../../space/services/space-member.service';
-import { WorkspaceRepo } from '@docmost/db/repos/workspace/workspace.repo';
-import { KyselyDB, KyselyTransaction } from '@docmost/db/types/kysely.types';
-import { executeTx } from '@docmost/db/utils';
-import { InjectKysely } from 'nestjs-kysely';
-import { User } from '@docmost/db/types/entity.types';
-import { GroupUserRepo } from '@docmost/db/repos/group/group-user.repo';
-import { GroupRepo } from '@docmost/db/repos/group/group.repo';
-import { PaginationOptions } from '@docmost/db/pagination/pagination-options';
-import { PaginationResult } from '@docmost/db/pagination/pagination';
-import { UpdateWorkspaceUserRoleDto } from '../dto/update-workspace-user-role.dto';
-import { UserRepo } from '@docmost/db/repos/user/user.repo';
-import { EnvironmentService } from '../../../integrations/environment/environment.service';
-import { DomainService } from '../../../integrations/environment/domain.service';
-import { jsonArrayFrom } from 'kysely/helpers/postgres';
-import { addDays } from 'date-fns';
-import { DISALLOWED_HOSTNAMES, WorkspaceStatus } from '../workspace.constants';
-import { v4 } from 'uuid';
-import { AttachmentType } from 'src/core/attachment/attachment.constants';
-import { InjectQueue } from '@nestjs/bullmq';
-import { QueueJob, QueueName } from '../../../integrations/queue/constants';
 import { Queue } from 'bullmq';
+import { addDays } from 'date-fns';
+import { jsonArrayFrom } from 'kysely/helpers/postgres';
+import { InjectKysely } from 'nestjs-kysely';
+import { v4 } from 'uuid';
+import { SpaceRole, UserRole } from '../../../common/helpers/types/permission';
+import { DomainService } from '../../../integrations/environment/domain.service';
+import { EnvironmentService } from '../../../integrations/environment/environment.service';
+import { QueueJob, QueueName } from '../../../integrations/queue/constants';
+import { CreateSpaceDto } from '../../space/dto/create-space.dto';
+import { SpaceMemberService } from '../../space/services/space-member.service';
+import { SpaceService } from '../../space/services/space.service';
+import { CreateWorkspaceDto } from '../dto/create-workspace.dto';
+import { UpdateWorkspaceUserRoleDto } from '../dto/update-workspace-user-role.dto';
+import { UpdateWorkspaceDto } from '../dto/update-workspace.dto';
+import { DISALLOWED_HOSTNAMES, WorkspaceStatus } from '../workspace.constants';
 
 @Injectable()
 export class WorkspaceService {
@@ -49,7 +48,7 @@ export class WorkspaceService {
     @InjectKysely() private readonly db: KyselyDB,
     @InjectQueue(QueueName.ATTACHMENT_QUEUE) private attachmentQueue: Queue,
     @InjectQueue(QueueName.BILLING_QUEUE) private billingQueue: Queue,
-  ) {}
+  ) { }
 
   async findById(workspaceId: string) {
     return this.workspaceRepo.findById(workspaceId);
