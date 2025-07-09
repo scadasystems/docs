@@ -12,7 +12,7 @@ export interface IPage {
   spaceId: string;
   workspaceId: string;
   isLocked: boolean;
-  lastUpdatedById: Date;
+  lastUpdatedById: string;
   createdAt: Date;
   updatedAt: Date;
   deletedAt: Date;
@@ -47,6 +47,11 @@ export interface IMovePageToSpace {
   spaceId: string;
 }
 
+export interface ICopyPageToSpace {
+  pageId: string;
+  spaceId: string;
+}
+
 export interface SidebarPagesParams {
   spaceId: string;
   pageId?: string;
@@ -60,6 +65,7 @@ export interface IPageInput {
   icon: string;
   coverPhoto: string;
   position: string;
+  isLocked: boolean;
 }
 
 export interface IExportPageParams {
