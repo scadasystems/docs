@@ -35,6 +35,13 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 import classes from "./share.module.css";
+import {
+  SearchControl,
+  SearchMobileControl,
+} from "@/features/search/components/search-control.tsx";
+import { ShareSearchSpotlight } from "@/features/search/share-search-spotlight";
+import { shareSearchSpotlight } from "@/features/search/constants";
+import ShareBranding from '@/features/share/components/share-branding.tsx';
 
 const MemoizedSharedTree = React.memo(SharedTree);
 
@@ -162,6 +169,7 @@ export default function ShareShell({
       <AppShell.Main>
         {children}
 
+        {data && shareId && !data.hasLicenseKey && <ShareBranding />}
         <Affix position={{ bottom: 20, right: 20 }}>
           <Tooltip label="Developed by LulzM" withArrow>
             <Button
